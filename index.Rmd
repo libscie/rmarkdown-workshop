@@ -1,0 +1,77 @@
+---
+title: "Fundamentals of RMarkdown"
+author: "Mike Frank & Chris Hartgerink"
+date: "July 31st, 2017"
+output:
+    revealjs::revealjs_presentation:
+        theme: black
+        highlight: pygments
+        incremental: true
+        center: true
+        transition: slide
+        reveal_options:
+            slideNumber: true
+        fig_caption: false
+bibliography: library.bib
+---
+
+## RMarkdown = R + Markdown
+
+1. It combines the the magic of R with the simplicity of Markdown documents
+1. The purpose: write your manuscripts and automatically insert results!
+1. Use cases:
+  * prevent rounding errors
+  * promote computational reproducibility
+  * encourage error correction by minimizing manual work
+  
+## Learning goals
+
+By the end of this class you should:
+
+* Know what Markdown is and how the syntax works, 
+* See how to integrate code and data in RMarkdown, 
+* Understand the different output formats from RMarkdown and how to generate them
+* Know about generating APA format files with [`papaja`](https://github.com/crsh/papaja) and bibtex.
+
+## The Markdown
+
+- Markdown is the simplest markup language around!
+- Open standard, convertable into `.tex`, `.docx`, `.html`, `.pdf`, etc
+- You can [learn Markdown in five (!) minutes](https://learnxinyminutes.com/docs/markdown/)
+- Despite being simple, very powerful and used on many web platforms
+
+## Basic Markdown: headings
+
+- `# Header 1` creates a heading of the first level
+- `## Header 2` creates a heading of the _second_ level
+- `### Header 3` ...
+- etc
+
+## Basic Markdown: letter styles
+
+- `__bold__` creates __bold__
+- `_italic_` creates _italic_
+- `***bold and italic!***` creates ***bold and italic!***
+
+## The R
+
+- If you're here, you probably know R
+- Programming language for statistics
+- Packages to add functionality
+- Everything open-source!
+
+## Combining R and Rmarkdown
+
+- This presentation also written in Rmarkdown!
+- We can include both code and its outputs, or just one of the two
+- Great not only for manuscripts, but also for course notes :-)
+
+## Exercises
+
+1. Go and find this presentation online
+- [ ]
+
+## Resources
+
+1. [cheat sheet RMarkdown](https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf)
+2. []
