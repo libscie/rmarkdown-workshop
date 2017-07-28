@@ -2,11 +2,16 @@
 title: "RMarkdown for writing reproducible scientific papers"
 author: "Mike Frank & Chris Hartgerink"
 date: "`r Sys.Date()`"
-output: 
-  html_document:
-    toc: true
-    number_sections: true
+output:
+  tufte::tufte_html: default
+  tufte::tufte_handout:
+    citation_package: natbib
+    latex_engine: xelatex
+  tufte::tufte_book:
+    citation_package: natbib
+    latex_engine: xelatex
 bibliography: library.bib
+link-citations: yes
 ---
   
 # Introduction
