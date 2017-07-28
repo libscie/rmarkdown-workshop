@@ -15,27 +15,39 @@ output:
 bibliography: library.bib
 ---
 
-## RMarkdown = R + Markdown
+```{r, echo = FALSE}
+require(statcheck)
+```
 
-1. It combines the the magic of R with the simplicity of Markdown documents
-1. The purpose: write your manuscripts and automatically insert results!
-1. Use cases:
-  * prevent rounding errors
-  * promote computational reproducibility
-  * encourage error correction by minimizing manual work
-  
+
+## Workshop
+
+1. Short intro to Markdown (this!)
+2. Create your first RMarkdown file
+3. 
+
 ## Learning goals
 
-By the end of this class you should:
+By the end of this workshop you should:
 
 * Know what Markdown is and how the syntax works, 
-* See how to integrate code and data in RMarkdown, 
+* See how to integrate code and data with RMarkdown, 
 * Understand the different output formats from RMarkdown and how to generate them
 * Know about generating APA format files with [`papaja`](https://github.com/crsh/papaja) and bibtex.
 
+
+## RMarkdown = R + Markdown
+
+1. It combines the magic of R with the simplicity of Markdown documents
+1. The purpose: write your manuscripts and automatically insert results!
+1. Use cases (amongst others):
+  * prevent rounding errors
+  * promote computational reproducibility
+  * encourage error correction by minimizing manual work
+
 ## The Markdown
 
-- Markdown is the simplest markup language around!
+- Markdown is the simplest document language!
 - Open standard, convertable into `.tex`, `.docx`, `.html`, `.pdf`, etc
 - You can [learn Markdown in five (!) minutes](https://learnxinyminutes.com/docs/markdown/)
 - Despite being simple, very powerful and used on many web platforms
@@ -63,15 +75,35 @@ By the end of this class you should:
 ## Combining R and Rmarkdown
 
 - This presentation also written in Rmarkdown!
+- Can write text, include code
 - We can include both code and its outputs, or just one of the two
 - Great not only for manuscripts, but also for course notes :-)
 
-## Exercises
+## Example code chunk
 
-1. Go and find this presentation online
-- [ ]
+```{r}
+x <- rnorm(100, 50, 20)
+y <- rnorm(143, 51, 20)
 
-## Resources
+t.test(x, y)
+```
 
+## Example in line
+
+1. However, we can also evaluate code in text, and replace text with output
+1. For example, let's round $\pi$ to four decimal places, using the code `round(pi, 4)`
+  * `r round(pi, 4)`
+
+## RMarkdown is more powerful
+
+- It's not just about individual results. 
+- Ensures data preparation, analysis code is IN the manuscript
+- Plus: Don't make all those tables and figures manually! :-)
+
+## Workshop
+
+Work through the handout accompanying these slides, which you can find at 
+* bit.ly/rmarkdown-pdf
+* bit.ly/rmarkdown-html 
 1. [cheat sheet RMarkdown](https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf)
-2. []
+1. Find this presentation online at [bit.ly/rmarkdown](https://bit.ly/rmarkdown)
