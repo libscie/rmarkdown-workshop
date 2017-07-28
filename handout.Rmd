@@ -131,7 +131,7 @@ Now, here are some of the startup options I often use. Caching can be very helpf
 
 ```{r}
 opts_chunk$set(fig.width=8, fig.height=5, 
-                      echo=TRUE, warning=FALSE, message=FALSE, cache=TRUE)
+echo=TRUE, warning=FALSE, message=FALSE, cache=TRUE)
 ```
 
 And you can use various local and glbal chunk options like `echo=FALSE` to suppress showing the code (better for papers). 
@@ -143,6 +143,13 @@ It's really easy to include graphs, like this one.
 ```{r}
 qplot(hp, mpg, col = factor(cyl), data = mtcars)
 ```
+
+External graphics can also be included.
+
+```{r eval = FALSE}
+knitr::include_graphics("path/to/file")
+```
+
 
 ## Statistics
 
@@ -163,7 +170,7 @@ I also do a lot of APA-formatted statistics. We can compute them first, and then
 ts <- with(mtcars,t.test(hp[cyl==4], hp[cyl==6]))
 ```
 
-There's a statistically-significant difference in horsepower for 4- and 6-cylinder cars  ($t(`r  round(ts$parameter,2)`) = `r  round(ts$statistic,2)`$, $p = `r round(ts$p.value,3)`$). To insert these stats inline I wrote e.g. `round(ts$parameter, 2)` inside an inline code block.
+There's a statistically-significant difference in horsepower for 4- and 6-cylinder cars  ($t(`r  round(ts$parameter,2)`) = `r  round(ts$statistic,2)`$, $p = `r round(ts$p.value,3)`$). To insert these stats inline I wrote e.g. `round(ts$parameter, 2)` inside an inline code block. <!-- APA would require omission of the leading zero. papaja::printp() will let you do that and it also addresses the next point but I don't know whether you want to include that function here. -->
 
 Note that rounding can get you in trouble here, because it's very easy to have an output of $p = 0$ when in fact $p$ can never be exactly equal to 0. 
 
@@ -174,6 +181,98 @@ Note that rounding can get you in trouble here, because it's very easy to have a
 
 ## Using the `papaja` package
 
+`papaja` is a R-package including a R Markdown template that can be used to produce documents that adhere to the American Psychological Association (APA) manuscript guidelines (6th Edition).
+
+### Software requirements
+
+To use `papaja` make sure you are using the latest versions of R and RStudio. If you want to create PDF- in addition to DOCX-files you need **[TeX](http://de.wikipedia.org/wiki/TeX) 2013 or later**. Try [MikTeX](http://miktex.org/) for Windows, [MacTeX](https://tug.org/mactex/) for Mac, or [TeX Live](http://www.tug.org/texlive/) for Linux. Some Linux users may need a few additional TeX packages for the LaTeX document class `apa6` to work:
+    
+```{sh ubuntu_extras, eval = FALSE}
+sudo apt-get install texlive texlive-publishers texlive-fonts-extra texlive-latex-extra texlive-humanities lmodern
+```
+
+### Installing `papaja`
+
+`papaja` has not yet been released on CRAN but you can install it from GitHub.
+
+```{r install_papapja, eval = FALSE}
+# Install devtools package if necessary
+if(!"devtools" %in% rownames(installed.packages())) install.packages("devtools")
+
+# Install papaja
+devtools::install_github("crsh/papaja")
+```
+
+### Creating a document
+
+The APA manuscript template should now be available through the RStudio menus when creating a new R Markdown file.
+
+```{r template-selection, echo = FALSE, fig.cap = "papaja's APA6 template is available through the RStudio menues."}
+knitr::include_graphics("https://raw.githubusercontent.com/crsh/papaja/master/inst/images/template_selection.png")
+```
+
+When you click RStudio's *Knit* button `papaja`, `rmarkdown,` and `knitr` work together to create an APA conform manuscript that includes both your manuscript text and the results of any embedded R code.
+
+```{r knit-button, echo = FALSE, fig.cap = "The *Knit* button in the RStudio."}
+knitr::include_graphics("https://raw.githubusercontent.com/crsh/papaja/master/inst/images/knitting.png")
+```
+
+Note, if you don't have TeX installed on your computer, or if you would like to create a Word document replace `output: papaja::apa6_pdf` with `output: papaja::apa6_word` in the document YAML header.
+
+`papaja` provides some rendering options that only work if you use `output: papaja::apa6_pdf`.
+`figsintext` indicates whether figures and tables should be included at the end of the document---as required by APA guidelines---or rendered in the body of the document.
+If `figurelist`, `tablelist`, or `footnotelist` are set to `yes` a list of figure captions, table captions, or footnotes is given following the reference section.
+`lineno` indicates whether lines should be continuously numbered through out the manuscript.
+
+
+### Report statistical analyses
+`apa_print()` facilitates reporting of statistical analyses.
+The function formats the contents of R objects and produces readily reportable text.
+
+```{r echo = TRUE, eval = FALSE}
+recall_anova <- afex::aov_car(
+  Recall ~ (Task * Valence * Dosage) + Error(Subject/(Task * Valence)) + Dosage
+  , data = mixed_data
+  , type = 3
+)
+recall_anova_results <- apa_print(recall_anova, es = "pes")
+recall_anova_results_p <- apa_print(recall_anova, es = "pes", in_paren = TRUE)
+```
+
+Now, you can report the results of your analyses like so:
+
+```{r eval = FALSE, echo = TRUE, eval = FALSE}
+Item valence (`r anova_results_p$full$Valence`) and the task affected recall
+performance, `r anova_results$full$Task`; the dosage, however, had no effect
+on recall, `r anova_results$full$Dosage`. There was no significant interaction.
+```
+
+<!--
+> Item valence (`r #recall_anova_results_p$full$Valence`) and the task affected recall performance, `r #recall_anova_results$full$Task`;
+> the dosage, however, had no effect on recall, `r #recall_anova_results$full$Dosage`.
+> There was no significant interaction.
+-->
+
+`apa_print()` also creates reportable tables---in this case a complete ANOVA table.
+You can include the table into the document by passing `recall_anova_results$table` to `apa_table()`.
+Remeber to include the `results = "asis"` argument in the chunk options of the chunk that generates the table.
+
+```{r results = "asis", echo = TRUE, eval = FALSE}
+apa_table(
+  recall_anova_results$table
+  , align = c("lrcrrr")
+  , caption = "ANOVA table for the analyis of the example data set."
+  , note = "This is a table created using R and papaja."
+)
+```
+
+
+### Cross-referencing
+
+`papaja` enables the use of `bookdown` cross-referencing syntax as detailed in the [bookdown documentation](https://bookdown.org/yihui/bookdown/cross-references.html).
+Generally, a cross-reference to a figure, table, or document section can be done by using the syntax `\@ref(label)`.
+If you set a figure caption in a code chunk via the chunk option `fig.cap = "This is my figure caption."`, the label for that figure is based on the label of the code chunk, e.g., if the chunk label is `foo`, the figure label will be `fig:foo`.
+If you used `knitr::kable()` or `apa_table()` to create a table, the label for that table is, again, based on the label of the code chunk, e.g., if the chunk label is `foo`, the figure label will be `tab:foo`.
 
 
 ## Bibiographic management
@@ -182,11 +281,26 @@ It's also possible to include references using `bibtex`, by using `@ref` syntax.
 
 With a bibtex file included, you can refer to papers like @nuijten2016 in text, or cite them parenthetically [e.g., @nuijten2016].
 
-So in conclusion, and as described by @xie2013, `knitr` is really amazing! 
+So in conclusion, and as described by @xie2013, `knitr` is really amazing!
+
+
+`citr` is an R package that provides an easy-to-use [RStudio addin](https://rstudio.github.io/rstudioaddins/) that facilitates inserting citations.
+The addin will automatically look up the Bib(La)TeX-file(s) specified in the YAML front matter.
+The references for the inserted citations are automatically added to the documents reference section.
+
+```{r citr-gif, echo = FALSE, fig.align = "center", fig.cap = "Demonstration of the RStudio addin from the `citr` package that inserts R Markdown citations."}
+knitr::include_graphics("https://raw.githubusercontent.com/crsh/citr/master/tools/images/addin_demo.gif")
+```
+
+Once `citr` is installed (`install.packages("citr")`) and you have restarted your R session, the addin appears in the menus and you can define a [keyboard shortcut](https://rstudio.github.io/rstudioaddins/#keyboard-shorcuts) to call the addin.
+
+
+
+
 
 ## Computational reproducibility concerns
 
-`packrat` for package versioning
+`packrat` for package versioning <!-- Given that there's not a lot of time to go into the details of package management, maybe recommending the `checkpoint` package is the better option? -->
 
 or include `session_info` from `devtools` at least. 
 
