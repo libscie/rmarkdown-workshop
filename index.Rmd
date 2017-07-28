@@ -15,16 +15,12 @@ output:
 bibliography: library.bib
 ---
 
-```{r, echo = FALSE}
-require(statcheck)
-```
-
-
 ## Workshop
 
 1. Short intro to Markdown (this!)
-2. Create your first RMarkdown file
-3. 
+2. A document you can work through to get started
+3. Any Qs.
+4. no need to stay until end if you feel you've got what you wanted
 
 ## Learning goals
 
@@ -103,7 +99,5 @@ t.test(x, y)
 ## Workshop
 
 Work through the handout accompanying these slides, which you can find at 
-* bit.ly/rmarkdown-pdf
-* bit.ly/rmarkdown-html 
-1. [cheat sheet RMarkdown](https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf)
-1. Find this presentation online at [bit.ly/rmarkdown](https://bit.ly/rmarkdown)
+* [bit.ly/rmarkdown-pdf](https://bit.ly/rmarkdown-pdf)
+* [bit.ly/rmarkdown-html](https://bit.ly/rmarkdown-html)

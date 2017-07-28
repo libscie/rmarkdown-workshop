@@ -1,22 +1,22 @@
 ---
 title: "RMarkdown for writing reproducible scientific papers"
 author: "Mike Frank & Chris Hartgerink"
-date: "`r Sys.Date()`"
+date: '`r Sys.Date()`'
 output:
-  tufte::tufte_html: 
-    toc: true
-    toc_depth: 1
   tufte::tufte_handout:
     citation_package: natbib
     latex_engine: xelatex
   tufte::tufte_book:
     citation_package: natbib
     latex_engine: xelatex
-bibliography: library.bib
+  tufte::tufte_html:
+    toc: yes
+    toc_depth: 1
 link-citations: yes
+bibliography: library.bib
 ---
 
-There is also a slidedeck that goes along with this [here](https://libscie.github.io/rmarkdown-workshop), which is worth looking at if you don't know what you're doing on this page and what to look at. Going through this document takes approximately 90 minutes, assuming you already know some basic `R` programming. If you find any errors and have a Github account, [please suggest changes here](https://github.com/libscie/rmarkdown-workshop/edit/master/handout.Rmd). All [content](https://github.com/libscie/rmarkdown-workshop) is CC 0 licensed, so feel free to remix and reuse! 
+There is also a slidedeck that goes along with this [here](https://libscie.github.io/rmarkdown-workshop), which is worth looking at if you don't know what you're doing on this page and what to look at. Going through this document takes at most two hours, assuming you already know some basic `R` programming. If you find any errors and have a Github account, [please suggest changes here](https://github.com/libscie/rmarkdown-workshop/edit/master/handout.Rmd). All [content](https://github.com/libscie/rmarkdown-workshop) is CC 0 licensed, so feel free to remix and reuse! 
   
 # Introduction
 
@@ -74,9 +74,7 @@ If you click on "Knit" (or hit `CTRL+SHIFT+K`) the RMarkdown file will run and g
 
 An RMarkdown file contains several parts. Most essential are the header, the body text, and code chunks.
 
-## The file
-
-### Header
+## Header
 
 Headers in RMarkdown files, contain some metadata about your document, which you can customize to your liking. Below is a simple example that purely states the title, author name(s), date^[Pro-tip: you can use the `Sys.Date()` function to have that use the current date when creating the document.], and output format.
 
@@ -91,7 +89,7 @@ output: html_document
 
 For now, go ahead and set `html_document` to `word_document`, except if you have strong preferences for `HTML` or `PDF`^[Note: to create PDF documents you also need a TeX installation. Don't know what that is? You probably don't have it then.]
 
-### Body text
+## Body text
 
 The body of the document is where you actually write your reports. This is primarily written in the Markdown format, which is explained in the [Markdown syntax](#markdown-syntax) section.
 
@@ -99,23 +97,48 @@ The beauty of RMarkdown is, however, that you can evaluate `R` code right in the
 
 For example, if you want to have the result of 48 times 35 in your text, you type \` r 48-35\`, which returns `r 48 - 35`. Please note that if you return a value with many decimals, it will also print these depending on your settings (for example, `r pi`).
 
-### Code chunks
+## Code chunks
 
-In the section above we introduced you to running code inside text, but often you need to take several steps in order to get to the result you need. And you don't want to do data cleaning in the text! This is why there are code chunks. A simple example is a code chunk loading packages
+In the section above we introduced you to running code inside text, but often you need to take several steps in order to get to the result you need. And you don't want to do data cleaning in the text! This is why there are code chunks. A simple example is a code chunk loading packages. 
 
-## Markdown syntax
+First, insert a code chunk by going to `Code->Insert code chunk` or by pressing `CTRL+ALT+I`. Inside this code chunk you can then type for example, `library(ggplot2)` and create an object `x`. 
 
-From [http://rmarkdown.rstudio.com/authoring_basics.html](), see also [this cheat sheet](https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf). 
+```{r}
+library(ggplot2)
 
-The idea of markdown is that it's really really easy to read and write:
+x <- 1 + 1
+```
+
+If you do not want to have the contents of the code chunk to be put into your document, you include `echo=FALSE` at the start of the code chunk. We can now use the contents from the above code chunk to print results (e.g., $x=`r x`$).
+
+These code chunks can contain whatever you need, including tables, and figures (which we will go into more later). Note that all code chunks regard the location of the RMarkdown as the working directory, so when you try to read in data use the relative path in.
+
+## Exercise
+
+1. Create a code chunk, and use `write.csv()` to write out some data. Subsequently, find that file on your computer.
+2. Load some of your most used packages in a code chunk and regenerate the document.
+3. Load some packages you've never heard of, like `adehabitatHS` or `QCA`. What happens?
+4. Force RMarkdown to install packages that the user doesn't yet have when the document is generated.
+
+# Markdown syntax
+
+Markdown is one of the simplest document languages around, that is an open standard and can be converted into `.tex`, `.docx`, `.html`, `.pdf`, etc. This is the main workhorse of RMarkdown and is very powerful. You can [learn Markdown in five (!) minutes](https://learnxinyminutes.com/docs/markdown/) Other resources include [http://rmarkdown.rstudio.com/authoring_basics.html](), and [this cheat sheet](https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf). 
+
+You can do some pretty cool tricks with Markdown, but these are the basics:
 
 * It's easy to get `*italic*` or `**bold**`. 
 * You can get headings using `# heading1` for first level, `## heading2` for second-level, and `### heading3` for third level. 
 * Lists are delimited with `*` for each entry.
 * You can write links by writing `[here's my link](http://foo.com)`.
 
-And then you can insert code by using the code chunk environment `\`\`\`\`, and its outputs will get mixed in. 
+If you want a more extensive description of all the potential of Markdown, [this introduction to Markdown](https://daringfireball.net/projects/markdown/) is highly detailed.
 
+# Tables and graphs
+
+# Writing APA-format papers
+
+
+THIS
 # Code and prose, mixed together
 
 First load packages, I always put these together at the top. 
