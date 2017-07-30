@@ -5,10 +5,10 @@ date: '`r Sys.Date()`'
 output:
   tufte::tufte_handout:
     citation_package: natbib
-    latex_engine: xelatex
+    latex_engine: pdflatex
   tufte::tufte_book:
     citation_package: natbib
-    latex_engine: xelatex
+    latex_engine: pdflatex
   tufte::tufte_html:
     toc: yes
     toc_depth: 1
@@ -240,19 +240,27 @@ Note that rounding can occasionally get you in trouble here, because it's very e
 
 ## Exercises
 
-1. Insert a table into your sample RMarkdown document. 
-2. Insert a graph of your choice, made using the `mtcars` dataset. 
+1. Using the `mtcars` dataset, insert a table and a graph of your choice into the document.^[If you're feeling uninspired, try `hist(mpg)`.]
 
 # Writing APA-format papers
 
 The end-game of reproducible research is to knit your entire paper. We'll focus on APA-style writeups. Managing APA format is a pain in the best of times. Isn't it nice to get it done for you? 
 
-We're going to use the `papaja` package. To install this, we'll need the `devtools` package (required above). Then run `devtools::install_github("crsh/papaja")`. Once you've got this working
-
 ## Exercise 
 
+We're going to use the `papaja` package. To install this, you need the `devtools` package (required above). One that's installed and you've loaded it (`library(devtools)`), then run `devtools::install_github("crsh/papaja")`. 
 
+Once you've got this working, start a new RMarkdown using the default template for `papaja`.
 
+```{r, echo = FALSE}
+knitr::include_graphics('figures/newfile.png')
+```
+
+Compile this document, and look at how awesome it is. (To compile you need `texlive`, a library for compiling markdown to PDF, so you may need to wait and install this later if it's not working). 
+
+Try pasting in your figure and table from your other RMarkdown (don't forget any libraries you need to make it compile). Presto, ready to submit!
+
+For a bit more on `papaja`, check out [this guide](https://rpubs.com/YaRrr/papaja_guide). 
 
 ## Bibiographic management
 
