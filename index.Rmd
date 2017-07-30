@@ -1,0 +1,103 @@
+---
+title: "Fundamentals of RMarkdown"
+author: "Mike Frank & Chris Hartgerink"
+date: "July 31st, 2017"
+output:
+    revealjs::revealjs_presentation:
+        theme: black
+        highlight: pygments
+        incremental: true
+        center: true
+        transition: slide
+        reveal_options:
+            slideNumber: true
+        fig_caption: false
+bibliography: library.bib
+---
+
+## Workshop
+
+1. Short intro to Markdown (this!)
+2. A document you can work through to get started
+3. Any Qs.
+4. no need to stay until end if you feel you've got what you wanted
+
+## Learning goals
+
+By the end of this workshop you should:
+
+* Know what Markdown is and how the syntax works, 
+* See how to integrate code and data with RMarkdown, 
+* Understand the different output formats from RMarkdown and how to generate them
+* Know about generating APA format files with [`papaja`](https://github.com/crsh/papaja) and bibtex.
+
+
+## RMarkdown = R + Markdown
+
+1. It combines the magic of R with the simplicity of Markdown documents
+1. The purpose: write your manuscripts and automatically insert results!
+1. Use cases (amongst others):
+  * prevent rounding errors
+  * promote computational reproducibility
+  * encourage error correction by minimizing manual work
+
+## The Markdown
+
+- Markdown is the simplest document language!
+- Open standard, convertable into `.tex`, `.docx`, `.html`, `.pdf`, etc
+- You can [learn Markdown in five (!) minutes](https://learnxinyminutes.com/docs/markdown/)
+- Despite being simple, very powerful and used on many web platforms
+
+## Basic Markdown: headings
+
+- `# Header 1` creates a heading of the first level
+- `## Header 2` creates a heading of the _second_ level
+- `### Header 3` ...
+- etc
+
+## Basic Markdown: letter styles
+
+- `__bold__` creates __bold__
+- `_italic_` creates _italic_
+- `***bold and italic!***` creates ***bold and italic!***
+
+## The R
+
+- If you're here, you probably know R
+- Programming language for statistics
+- Packages to add functionality
+- Everything open-source!
+
+## Combining R and Rmarkdown
+
+- This presentation also written in Rmarkdown!
+- Can write text, include code
+- We can include both code and its outputs, or just one of the two
+- Great not only for manuscripts, but also for course notes :-)
+
+## Example code chunk
+
+```{r}
+x <- rnorm(100, 50, 20)
+y <- rnorm(143, 51, 20)
+
+t.test(x, y)
+```
+
+## Example in line
+
+1. However, we can also evaluate code in text, and replace text with output
+1. For example, let's round $\pi$ to four decimal places, using the code `round(pi, 4)`
+  * `r round(pi, 4)`
+
+## RMarkdown is more powerful
+
+- It's not just about individual results. 
+- Ensures data preparation, analysis code is IN the manuscript
+- Plus: Don't make all those tables and figures manually! :-)
+
+## Workshop
+
+Work through the handout accompanying these slides, which you can find at 
+* [bit.ly/rmarkdown-pdf](https://bit.ly/rmarkdown-pdf)
+* [bit.ly/rmarkdown-html](https://bit.ly/rmarkdown-html)
