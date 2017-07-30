@@ -19,8 +19,8 @@ bibliography: library.bib
 
 1. Short intro to Markdown (this!)
 2. A document you can work through to get started
-3. Any Qs.
-4. no need to stay until end if you feel you've got what you wanted
+3. Exercises along the way where we'll highlight how to make useful documents (e.g. APA manuscript)
+4. No need to stay until end if you feel you've got what you wanted
 
 ## Learning goals
 
@@ -30,7 +30,6 @@ By the end of this workshop you should:
 * See how to integrate code and data with RMarkdown, 
 * Understand the different output formats from RMarkdown and how to generate them
 * Know about generating APA format files with [`papaja`](https://github.com/crsh/papaja) and bibtex.
-
 
 ## RMarkdown = R + Markdown
 
@@ -70,10 +69,9 @@ By the end of this workshop you should:
 
 ## Combining R and Rmarkdown
 
-- This presentation also written in Rmarkdown!
 - Can write text, include code
 - We can include both code and its outputs, or just one of the two
-- Great not only for manuscripts, but also for course notes :-)
+- "Literate programming": mix code and explanation so that it's easier to figure out what's going on.
 
 ## Example code chunk
 
@@ -90,14 +88,31 @@ t.test(x, y)
 1. For example, let's round $\pi$ to four decimal places, using the code `round(pi, 4)`
   * `r round(pi, 4)`
 
-## RMarkdown is more powerful
+<!-- ## RMarkdown is more powerful -->
 
-- It's not just about individual results. 
-- Ensures data preparation, analysis code is IN the manuscript
-- Plus: Don't make all those tables and figures manually! :-)
+<!-- - It's not just about individual results.  -->
+<!-- - Ensures data preparation, analysis code is IN the manuscript -->
+<!-- - Plus: Don't make all those tables and figures manually! :-) -->
+
+## Output formats
+
+- HTML - easy to share results on the web 
+- PDF - for manuscripts/reports (requires installing `latex`)
+- Word - for editing with non-R collaborators, journals
+
+## Templates
+
+- Nicely formatted handouts / reports
+- APA manuscripts using `papaja` (we'll get into this in depth)
+- Specialized styles like PNAS or Cognitive Science
+- Don't waste time reformatting - just change the template
+
+## RMarkdown presentations
+
+- If you want to go overboard, you can render slides from code too
+- This is not always perfect, but it's great for course notes, especially teaching stats.
+- This presentation also written in Rmarkdown!
 
 ## Workshop
 
-Work through the handout accompanying these slides, which you can find at 
-* [bit.ly/rmarkdown-pdf](https://bit.ly/rmarkdown-pdf)
-* [bit.ly/rmarkdown-html](https://bit.ly/rmarkdown-html)
+Work through the handout accompanying these slides, which you can find at [http://bit.ly/rmarkdown-pdf](https://bit.ly/rmarkdown-pdf) and [http://bit.ly/rmarkdown-html](https://bit.ly/rmarkdown-html)
