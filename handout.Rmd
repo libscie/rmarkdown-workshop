@@ -1,17 +1,17 @@
 ---
 title: "RMarkdown for writing reproducible scientific papers"
-author: "[Mike Frank](mailto:) & [Chris Hartgerink](mailto:chris@libscie.org)"
+author: '[Mike Frank](mailto:) & [Chris Hartgerink](mailto:chris@libscie.org)'
 date: '`r Sys.Date()`'
 output:
-  tufte::tufte_html:
-    toc: yes
-    toc_depth: 1
   tufte::tufte_handout:
     citation_package: natbib
     latex_engine: pdflatex
   tufte::tufte_book:
     citation_package: natbib
     latex_engine: pdflatex
+  tufte::tufte_html:
+    toc: yes
+    toc_depth: 1
 link-citations: yes
 bibliography: library.bib
 ---
