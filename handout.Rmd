@@ -3,15 +3,15 @@ title: "RMarkdown for writing reproducible scientific papers"
 author: '[Mike Frank](mailto:mcfrank@stanford.edu) & [Chris Hartgerink](mailto:chris@libscie.org)'
 date: '`r Sys.Date()`'
 output:
+  tufte::tufte_html:
+    toc: yes
+    toc_depth: 1
   tufte::tufte_handout:
     citation_package: natbib
     latex_engine: pdflatex
   tufte::tufte_book:
     citation_package: natbib
     latex_engine: pdflatex
-  tufte::tufte_html:
-    toc: yes
-    toc_depth: 1
 link-citations: yes
 bibliography: library.bib
 ---
@@ -128,12 +128,17 @@ These code chunks can contain whatever you need, including tables, and figures (
 
 ## Exercises
 
-Switch over to your new RMarkdown file.
+These exercises are all about failure modes to RMarkdown. Go ahead and switch over to your new RMarkdown file.
 
-1. Create a code chunk. In it, use `write.csv(USArrests, "USArrests.csv")` to write out some data to your hard drive. Subsequently, find that file on your computer. Where is it?^[RMarkdown files operate out of the directory in which they are located. If you read in data, it's important to write paths relatively starting from that "project root" directory, instead of absolute -- otherwise when you share the file the paths will all be wrong. Similarly, if you write out data they go in the root directory.]
-2. Load the `ggplot2` package (or any other that you use frequently) in a code chunk and regenerate the document. Now try load some packages you've never heard of, like `adehabitatHS` or `QCA`. What happens?^[We like to load all our packages at the top of the document so it's easy to know what you need to install to make it run.]
+1. Create a code chunk. In it, use `write.csv(USArrests, "USArrests.csv")` to write out some data to your hard drive. Subsequently, find that file on your computer. Where is it?
 
-<!-- 4. Force RMarkdown to install packages that the user doesn't yet have when the document is generated. -->
+2. Load the `ggplot2` package (or any other that you use frequently) in a code chunk and regenerate the document. Now try to load some packages you've never heard of, like `adehabitatHS` or `QCA`. What happens?
+
+## Solutions
+
+1. RMarkdown files operate out of the directory in which they are located. If you read in data, it's important to write paths relatively starting from that "project root" directory, instead of absolute -- otherwise when you share the file the paths will all be wrong. Similarly, if you write out data they go in the root directory.
+
+2. If you don't have packages installed, the knitting process will fail. How do you head this off?  We like to load all our packages at the top of the document so it's easy to know what you need to install to make it run; it's also easy for users to see what packages they need. Some folks `install.packages` *in the script*, though we don't advocate for that here.
 
 # Markdown syntax
 
@@ -157,15 +162,17 @@ Swap over to your new sample markdown.
 
 ```yaml
 output: 
-html_document:
-toc: true
+  html_document:
+    toc: true
 ```
 
 Now recompile. Looks nice, right?^[Pro-tip: you can specify how deep the TOC should go by adding `toc_depth: 2` to go two levels deep]
 
 3. Try adding another option: `toc_float: true`. Recompile -- super cool. There are plenty more great output options that you can modify. [Here is a link to the documentation.](http://rmarkdown.rstudio.com/html_document_format.html)
 
-# Adding more code (Tables and Graphs)
+#  Headers, Tables, and Graphs
+
+## Headers 
 
 We're going to want more libraries loaded (for now we're loading them inline). 
 
@@ -251,7 +258,7 @@ Note that rounding can occasionally get you in trouble here, because it's very e
 
 ## Exercises
 
-1. Using the `mtcars` dataset, insert a table and a graph of your choice into the document.^[If you're feeling uninspired, try `hist(mpg)`.]
+1. Using the `mtcars` dataset, insert a table and a graph of your choice into the document.^[If you're feeling uninspired, try `hist(mtcars$mpg)`.]
 
 # Writing APA-format papers
 
