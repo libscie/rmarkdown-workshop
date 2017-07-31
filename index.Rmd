@@ -56,8 +56,8 @@ By the end of this workshop you should:
 
 ## Basic Markdown: letter styles
 
-- `__bold__` creates __bold__
-- `_italic_` creates _italic_
+- `**bold**` creates **bold**
+- `*italic*` creates *italic*
 - `***bold and italic!***` creates ***bold and italic!***
 
 ## The R
