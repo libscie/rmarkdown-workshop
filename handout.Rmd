@@ -1,6 +1,6 @@
 ---
 title: "RMarkdown for writing reproducible scientific papers"
-author: '[Mike Frank](mailto:) & [Chris Hartgerink](mailto:chris@libscie.org)'
+author: '[Mike Frank](mailto:mcfrank@stanford.edu) & [Chris Hartgerink](mailto:chris@libscie.org)'
 date: '`r Sys.Date()`'
 output:
   tufte::tufte_handout:
@@ -19,8 +19,7 @@ bibliography: library.bib
 
 ```{r, echo=FALSE}
 library(knitr)
-opts_chunk$set(fig.width=4, fig.height=3, 
-               echo=TRUE, 
+opts_chunk$set(echo=TRUE, 
                warning=FALSE, message=FALSE, 
                cache=TRUE)
 ```
@@ -76,7 +75,7 @@ Great, you installed both `R` and `Rstudio`! Next up, making your first RMarkdow
 
 Fire up Rstudio and create a new RMarkdown file. Don't worry about the settings, we'll get to that later.
 
-```{r, echo = FALSE, fig.width=4}
+```{r, echo = FALSE}
 knitr::include_graphics('figures/newfile.png')
 ```
 
@@ -101,7 +100,7 @@ output: html_document
 ---
 ```
 
-For now, go ahead and set `html_document` to `word_document`, except if you have strong preferences for `HTML` or `PDF`.^[Note: to create PDF documents you also need a TeX installation. Don't know what that is? You probably don't have it then.]
+For now, go ahead and set `html_document` to `word_document`, except if you have strong preferences for `HTML` or `PDF`.^[Note: to create PDF documents you also need a TeX installation. Don't know what that is? You probably don't have it then. More info below.]
 
 ## Body text
 
@@ -162,9 +161,9 @@ html_document:
 toc: true
 ```
 
-Now recompile. Looks spiffy, right?^[Pro-tip: you can specify how deep the TOC should go by adding `toc_depth: 2` to go two levels deep]
+Now recompile. Looks nice, right?^[Pro-tip: you can specify how deep the TOC should go by adding `toc_depth: 2` to go two levels deep]
 
-3. Try adding another option: `toc_float: true`. Recompile -- super spiffy. There are plenty more great output options that you can modify. [Here is a link to the documentation.](http://rmarkdown.rstudio.com/html_document_format.html)
+3. Try adding another option: `toc_float: true`. Recompile -- super cool. There are plenty more great output options that you can modify. [Here is a link to the documentation.](http://rmarkdown.rstudio.com/html_document_format.html)
 
 # Adding more code (Tables and Graphs)
 
@@ -184,7 +183,7 @@ We often also add `chunk options` to each code chunk so that, for example:
 - warnings and messages are suppressed (`warning` and `message` settings)
 - computations are cached (`cache` setting)
 
-There are many others available as well. Caching can be very helpful for large files, but can also cause problems when there are external dependencies that change. An example that is useful for manuscripts is
+There are many others available as well. Caching can be very helpful for large files, but can also cause problems when there are external dependencies that change. An example that is useful for manuscripts is:
 
 ```{r eval=FALSE}
 opts_chunk$set(fig.width=8, fig.height=5, 
@@ -264,11 +263,8 @@ We're going to use the `papaja` package. `papaja` is a R-package including a R M
 
 ## Software requirements
 
-To use `papaja`, make sure you are using the latest versions of R and RStudio. If you want to create PDF- in addition to DOCX-files you need **[TeX](http://de.wikipedia.org/wiki/TeX) 2013 or later**. Try [MikTeX](http://miktex.org/) for Windows, [MacTeX](https://tug.org/mactex/) for Mac, or [TeX Live](http://www.tug.org/texlive/) for Linux. Some Linux users may need a few additional TeX packages for the LaTeX document class `apa6` to work. For Ubuntu, we suggest running:
+To use `papaja`, make sure you are using the latest versions of R and RStudio. If you want to create PDF- in addition to DOCX-files you need **[TeX](http://de.wikipedia.org/wiki/TeX) 2013 or later**. Try [MikTeX](http://miktex.org/) for Windows, [MacTeX](https://tug.org/mactex/) for Mac, or [TeX Live](http://www.tug.org/texlive/) for Linux. Some Linux users may need a few additional TeX packages for the LaTeX document class `apa6` to work.^[For Ubuntu, we suggest running: `sudo apt-get install texlive texlive-publishers texlive-fonts-extra texlive-latex-extra texlive-humanities lmodern`.]
 
-```{sh ubuntu_extras, eval = FALSE}
-sudo apt-get install texlive texlive-publishers texlive-fonts-extra texlive-latex-extra texlive-humanities lmodern
-```
 
 ## Installing `papaja`
 
@@ -320,11 +316,7 @@ recall_anova_results_p <- apa_print(recall_anova, es = "pes", in_paren = TRUE)
 
 Now, you can report the results of your analyses like so:
 
-```{r eval=FALSE}
-Item valence (`r anova_results_p$full$Valence`) and the task affected recall
-performance, `r anova_results$full$Task`; the dosage, however, had no effect
-on recall, `r anova_results$full$Dosage`. There was no significant interaction.
-```
+> Item valence (\` r anova_results_p$full$Valence\`) and the task affected recall performance, \` r anova_results$full$Task\`; the dosage, however, had no effect on recall, \` r anova_results$full$Dosage\`. There was no significant interaction.
 
 `apa_print()` also creates reportable tables---in this case a complete ANOVA table.
 You can include the table into the document by passing `recall_anova_results$table` to `apa_table()`.
@@ -368,14 +360,14 @@ Make sure you've got `papaja`, then open a new template file. Compile this docum
 
 Try pasting in your figure and table from your other RMarkdown (don't forget any libraries you need to make it compile). Presto, ready to submit!
 
-For a bit more on `papaja`, check out [this guide](https://rpubs.com/YaRrr/papaja_guide). 
+For a bit more on `papaja`, check out **[this guide](https://rpubs.com/YaRrr/papaja_guide)**. 
 
 
 # Further Frontiers
 
 ## Other dissemination methods
 
-We didn't spend as much time on it here, but one of the biggest strengths of RMarkdown is how you can easily switch between formats. For example, we made [our slides in RMarkdown](https://libscie.github.io/rmarkdown-workshop) using `revealjs` (`ioslides` is also a good option). 
+We didn't spend as much time on it here, but one of the biggest strengths of RMarkdown is how you can easily switch between formats. For example, we made **[our slides in RMarkdown](https://libscie.github.io/rmarkdown-workshop)** using `revealjs` (`ioslides` is also a good option). 
 
 We also like to share HTML RMarkdown reports with collaborators using the [RPubs service](http://rpubs.com) or hosting of your own choice. It's incredibly easy to share your work publicly this way -- you just push the "publish" button in the upper right hand corner of the RStudio viewer window. Then you set up an account, and you are on your way. We find this is a great method for sending analysis writeups -- no more pasting figures into email! Hosting HTML files on your own page is also easy if you know how that works.
 
