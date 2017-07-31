@@ -5,10 +5,10 @@ date: '`r Sys.Date()`'
 output:
   tufte::tufte_handout:
     citation_package: natbib
-    latex_engine: xelatex
+    latex_engine: pdflatex
   tufte::tufte_book:
     citation_package: natbib
-    latex_engine: xelatex
+    latex_engine: pdflatex
   tufte::tufte_html:
     toc: yes
     toc_depth: 1
@@ -20,7 +20,7 @@ There is also a slidedeck that goes along with this [here](https://libscie.githu
   
 # Introduction
 
-This document is a short tutorial on using RMarkdown to mix prose and code together for creating reproducible scientific documents. It's based on documents that both Chris and Mike wrote about  independently (see [here](https://elifesciences.org/labs/cad57bcf/composing-reproducible-manuscripts-using-r-markdown) and [here](http://babieslearninglanguage.blogspot.com/2015/11/preventing-statistical-reporting-errors.html) if you're interested). In short: RMarkdown allows you to create documents that are compiled with code, producing your next scientific paper.^[Note: this is also possible for Python and other open-source data analysis languages, but we focus on R]
+This document is a short tutorial on using RMarkdown to mix prose and code together for creating reproducible scientific documents. It's based on documents that both Chris and Mike wrote about  independently (see [here](https://elifesciences.org/labs/cad57bcf/composing-reproducible-manuscripts-using-r-markdown) and [here](http://babieslearninglanguage.blogspot.com/2015/11/preventing-statistical-reporting-errors.html) if you're interested). In short: RMarkdown allows you to create documents that are compiled with code, producing your next scientific paper.^[Note: this is also possible for Python and other open-source data analysis languages, but we focus on R.]
 
 Now we're together trying to help spread the word, because it can make writing manuscripts so much easier! We wrote this handout in RMarkdown as well (looks really sweet, no?).
 
@@ -39,11 +39,11 @@ Cool, thanks for sticking with us and reading up through here!
 
 There are three reasons to write reproducible papers. To be right, to be reproducible, and to be efficient. There are more, but these are convincing to us. In more depth:
 
-1. to avoid errors. Using an automated method for scraping APA-formatted stats out of PDFs, @nuijten2015 found that over 10% of p-values in published papers were inconsistent with the reported details of the statistical test, and 1.6% were what they called "grossly" inconsistent, e.g. difference between the p-value and the test statistic meant that one implied statistical significance and the other did not. Nearly half of all papers had errors in them. 
+1. To avoid errors. Using an automated method for scraping APA-formatted stats out of PDFs, @nuijten2016 found that over 10% of p-values in published papers were inconsistent with the reported details of the statistical test, and 1.6% were what they called "grossly" inconsistent, e.g. difference between the p-value and the test statistic meant that one implied statistical significance and the other did not. Nearly half of all papers had errors in them. 
 
-2. to promote computational reproducibility. Computational reproducibility means that other people can take your data and get the same numbers that are in your paper. Even if you don't have errors, it can still be very hard to recover the numbers from published papers because of ambiguities in analysis. Creating a document that literally specifies where all the numbers come from in terms of code that operates over the data removes all this ambiguity.
+2. To promote computational reproducibility. Computational reproducibility means that other people can take your data and get the same numbers that are in your paper. Even if you don't have errors, it can still be very hard to recover the numbers from published papers because of ambiguities in analysis. Creating a document that literally specifies where all the numbers come from in terms of code that operates over the data removes all this ambiguity.
 
-3. to create spiffy documents that can be revised easily. This is actually a really big neglected one for us. At least one of us used to tweak tables and figures by hand constantly, leading to a major incentive *never to rerun analyses* because it would mean re-pasting and re-illustratoring all the numbers and figures in a paper. That's a bad thing! It means you have an incentive to be lazy and to avoid redoing your stuff. And you waste tons of time when you do. In contrast, with a reproducible document, you can just rerun with a tweak to the code. You can even specify what you want the figures and tables to look like before you're done with all the data collection (e.g., for purposes of preregistraion or a registered report). 
+3. To create spiffy documents that can be revised easily. This is actually a really big neglected one for us. At least one of us used to tweak tables and figures by hand constantly, leading to a major incentive *never to rerun analyses* because it would mean re-pasting and re-illustratoring all the numbers and figures in a paper. That's a bad thing! It means you have an incentive to be lazy and to avoid redoing your stuff. And you waste tons of time when you do. In contrast, with a reproducible document, you can just rerun with a tweak to the code. You can even specify what you want the figures and tables to look like before you're done with all the data collection (e.g., for purposes of preregistraion or a registered report). 
 
 ## Learning goals
 
@@ -54,13 +54,15 @@ By the end of this class you should:
 * Understand the different output formats from RMarkdown and how to generate them, and
 * Know about generating APA format files with `papaja` and bibtex.
 
-# Installation
+# Getting Started
+
+## Installation
 
 Before we get started with running everything, make sure to have `R` installed (download [here](https://cran.r-project.org/)) and `Rstudio` (download [here](https://www.rstudio.com/products/rstudio/download/#download)). If you haven't yet, go do that first and we'll be here when you get back!
 
-# Getting started
+## Exercise
 
-Great, you installed both `R` and `Rstudio`. Next up, making your first RMarkdown file.
+Great, you installed both `R` and `Rstudio`! Next up, making your first RMarkdown file.
 
 Fire up Rstudio and create a new RMarkdown file. Don't worry about the settings, we'll get to that later.
 
@@ -68,7 +70,9 @@ Fire up Rstudio and create a new RMarkdown file. Don't worry about the settings,
 knitr::include_graphics('figures/newfile.png')
 ```
 
-If you click on "Knit" (or hit `CTRL+SHIFT+K`) the RMarkdown file will run and generate all results and present you with a PDF file, HTML file, or a Word file. If RStudio requests you to install packages, click yes and see whether everything works to begin with. We need that before we get going!
+If you click on "Knit" (or hit `CTRL+SHIFT+K`) the RMarkdown file will run and generate all results and present you with a PDF file, HTML file, or a Word file. If RStudio requests you to install packages, click yes and see whether everything works to begin with. 
+
+We need that before we teach you more about RMarkdown. But you should feel good if you get here already, because honestly, you're about 80% of the way to being able to write basic RMarkdown files. It's that easy.
 
 # Structure of an RMarkdown file
 
@@ -87,7 +91,7 @@ output: html_document
 ---
 ```
 
-For now, go ahead and set `html_document` to `word_document`, except if you have strong preferences for `HTML` or `PDF`^[Note: to create PDF documents you also need a TeX installation. Don't know what that is? You probably don't have it then.]
+For now, go ahead and set `html_document` to `word_document`, except if you have strong preferences for `HTML` or `PDF`.^[Note: to create PDF documents you also need a TeX installation. Don't know what that is? You probably don't have it then.]
 
 ## Body text
 
@@ -113,12 +117,14 @@ If you do not want to have the contents of the code chunk to be put into your do
 
 These code chunks can contain whatever you need, including tables, and figures (which we will go into more later). Note that all code chunks regard the location of the RMarkdown as the working directory, so when you try to read in data use the relative path in.
 
-## Exercise
+## Exercises
 
-1. Create a code chunk, and use `write.csv()` to write out some data. Subsequently, find that file on your computer.
-2. Load some of your most used packages in a code chunk and regenerate the document.
-3. Load some packages you've never heard of, like `adehabitatHS` or `QCA`. What happens?
-4. Force RMarkdown to install packages that the user doesn't yet have when the document is generated.
+Switch over to your new RMarkdown file.
+
+1. Create a code chunk. In it, use `write.csv(USArrests, "USArrests.csv")` to write out some data to your hard drive. Subsequently, find that file on your computer. Where is it?^[RMarkdown files operate out of the directory in which they are located. If you read in data, it's important to write paths starting from that "project root" directory -- otherwise when you share the file the paths will all be wrong. Similarly, if you write out data they go in the root directory.]
+2. Load the `ggplot2` package (or any other that you use frequently) in a code chunk and regenerate the document. Now try load some packages you've never heard of, like `adehabitatHS` or `QCA`. What happens?^[We like to load all our packages at the top of the document so it's easy to know what you need to install to make it run. But it's not good form to put `install.packages` statements in your markdown -- let users choose whether or not they want to install things, don't do it for them!]
+
+<!-- 4. Force RMarkdown to install packages that the user doesn't yet have when the document is generated. -->
 
 # Markdown syntax
 
@@ -133,15 +139,26 @@ You can do some pretty cool tricks with Markdown, but these are the basics:
 
 If you want a more extensive description of all the potential of Markdown, [this introduction to Markdown](https://daringfireball.net/projects/markdown/) is highly detailed.
 
-# Tables and graphs
+## Exercises
 
-# Writing APA-format papers
+Swap over to your new sample markdown.
 
+1. Outlining using headings is a really great way to keep things organized! Try making a bunch of headings, and then recompiling your document. 
+2. Add a table of contents. This will involve going to the header of the document (the `YAML`), and adding some options to the `html document` bit. You want it to look like this (indentation has to be correct):
 
-THIS
-# Code and prose, mixed together
+```yaml
+output: 
+  html_document:
+    toc: true
+```
 
-First load packages, I always put these together at the top. 
+Now recompile. Looks spiffy, right?
+
+3. Try adding another option: `toc_float: true`. Recompile -- super spiffy. There are plenty more great output options that you can modify. [Here is a link to the documentation.](http://rmarkdown.rstudio.com/html_document_format.html)
+
+# Adding More Code (Tables and Graphs)
+
+We're going to want more libraries loaded (for now we're loading them inline). 
 
 ```{r}
 library(knitr)
@@ -150,21 +167,48 @@ library(broom)
 library(devtools)
 ```
 
-Now, here are some of the startup options I often use. Caching can be very helpful for large files, but can also cause problems when there are external dependencies that change. 
+We often also add `chunk options` to each code chunk so that, for example:
+
+- code does or doesn't display inline (`echo` setting)
+- figures are shown at various sizes (`fig.width` and `fig.height` settings)
+- warnings and messages are suppressed (`warning` and `message` settings)
+- computations are cached (`cache` setting)
+
+There are many others available as well. Caching can be very helpful for large files, but can also cause problems when there are external dependencies that change. 
+
+I sometimes set these as defaults, too:
 
 ```{r}
 opts_chunk$set(fig.width=8, fig.height=5, 
-                      echo=TRUE, warning=FALSE, message=FALSE, cache=TRUE)
+               echo=TRUE, 
+               warning=FALSE, message=FALSE, 
+               cache=TRUE)
 ```
 
-And you can use various local and glbal chunk options like `echo=FALSE` to suppress showing the code (better for papers). 
 
 ## Graphs
 
-It's really easy to include graphs, like this one.
+It's really easy to include graphs, like this one. (Using the `mtcars` dataset that comes with `ggplot2`).
 
 ```{r}
 qplot(hp, mpg, col = factor(cyl), data = mtcars)
+```
+
+All you have to do is make the plot and it will render into the text. 
+
+## Tables
+
+There are many ways to make good-looking tables using RMarkdown, depending on your display purpose. 
+
+- The `knitr` package (which powers RMarkdown) comes with the `kable` function. It's versatile and makes perfectly reasonable tables. I also like that it has a `digits` argument for controlling significant figures. 
+- For HTML tables, I like the `DT` package, which provides `datatable` -- these are pretty and interactive javascript-based tables that you can click on and search in. Not great for static documents though. 
+- For APA manuscripts, it can also be helpful to use the `xtable` package, which creates very flexible LaTeX tables. These can be tricky to get right but they are completely customizable provided you want to google around and learn a bit about tex. 
+
+We recommend starting with `kable`:
+
+
+```{r}
+kable(head(mtcars), digits = 1)
 ```
 
 ## Statistics
@@ -180,45 +224,68 @@ kable(tidy(mod), digits = 3)
 
 Of course, cleaning these up can take some work. For example, we'd need to rename a bunch of fields to make this table have the labels we wanted (e.g., to turn `hp` into `Horsepower`). 
 
-I also do a lot of APA-formatted statistics. We can compute them first, and then print them inline.
+We often need APA-formatted statistics. We can compute them first, and then print them inline.
 
 ```{r}
 ts <- with(mtcars,t.test(hp[cyl==4], hp[cyl==6]))
 ```
 
-There's a statistically-significant difference in horsepower for 4- and 6-cylinder cars  ($t(`r  round(ts$parameter,2)`) = `r  round(ts$statistic,2)`$, $p = `r round(ts$p.value,3)`$). To insert these stats inline I wrote e.g. `round(ts$parameter, 2)` inside an inline code block.
+This pre-computation makes it easy to write:
 
-Note that rounding can get you in trouble here, because it's very easy to have an output of $p = 0$ when in fact $p$ can never be exactly equal to 0. 
+There's a statistically-significant difference in horsepower for 4- and 6-cylinder cars  ($t(`r round(ts$parameter,2)`) = `r  round(ts$statistic,2)`$, $p = `r round(ts$p.value,3)`$). 
 
-# Putting it all to use!
+To insert these stats inline I wrote e.g. `round(ts$parameter, 2)` inside an inline code block.
 
+Note that rounding can occasionally get you in trouble here, because it's very easy to have an output of $p = 0$ when in fact $p$ can never be exactly equal to 0. 
+
+## Exercises
+
+1. Using the `mtcars` dataset, insert a table and a graph of your choice into the document.^[If you're feeling uninspired, try `hist(mpg)`.]
 
 # Writing APA-format papers
 
-## Using the `papaja` package
+The end-game of reproducible research is to knit your entire paper. We'll focus on APA-style writeups. Managing APA format is a pain in the best of times. Isn't it nice to get it done for you? 
 
+## Exercise 
 
+We're going to use the `papaja` package. To install this, you need the `devtools` package (required above). One that's installed and you've loaded it (`library(devtools)`), then run `devtools::install_github("crsh/papaja")`. 
+
+Once you've got this working, start a new RMarkdown using the default template for `papaja`.
+
+```{r, echo = FALSE}
+knitr::include_graphics('figures/newfile.png')
+```
+
+Compile this document, and look at how awesome it is. (To compile you need `texlive`, a library for compiling markdown to PDF, so you may need to wait and install this later if it's not working). 
+
+Try pasting in your figure and table from your other RMarkdown (don't forget any libraries you need to make it compile). Presto, ready to submit!
+
+For a bit more on `papaja`, check out [this guide](https://rpubs.com/YaRrr/papaja_guide). 
 
 ## Bibiographic management
 
 It's also possible to include references using `bibtex`, by using `@ref` syntax. I like [bibdesk](http://bibdesk.sourceforge.net/) as a simple reference manager that integrates with google scholar, but many other options are possible. 
 
-With a bibtex file included, you can refer to papers like @nuijten2016 in text, or cite them parenthetically [e.g., @nuijten2016].
+With a bibtex file included, you can refer to papers like @nuijten2016 in text, or cite them parenthetically [e.g., @nuijten2016]. Take a look at the `papaja` APA example to see how this works. 
 
-So in conclusion, and as described by @xie2013, `knitr` is really amazing! 
+# Further Frontiers
+
+## Other dissemination methods
+
+We didn't spend as much time on it here, but one of the biggest strengths of RMarkdown is how you can easily switch between formats. For example, we made our slides in RMarkdown using `revealjs` (`ioslides` is also a good option). 
+
+We also like to share HTML RMarkdown reports with collaborators using the [RPubs service](http://rpubs.com). It's incredibly easy to share your work publicly this way -- you just push the "publish" button in the upper right hand corner of the RStudio viewer window. Then you set up an account, and you are on your way. We find this is a great method for sending analysis writeups -- no more pasting figures into email!
+
+And of course because not everyone uses R, you can simply click on the knit options at the top of the code window to switch to a Word output format. Then your collaborators can edit the text in Word (or upload to Google docs) and you can re-merge the changes with your reproducible code. This isn't a perfect workflow yet, but it's not too bad.  
 
 ## Computational reproducibility concerns
 
-`packrat` for package versioning
+Once you provide code and data for your RMarkdown, you are most of the way to full computational reproducibility. Other people should be able to get the same numbers as you for your paper!
 
-or include `session_info` from `devtools` at least. 
+But there's still one wrinkle. What if you use linear mixed effect models from `lme4` and then the good people developing that package make it better -- but that changes your numbers? Package versioning (and versioning on `R` itself) is a real concern. To combat this issue, there are a number of tools out there. The `packrat` pacakge is a solution for package versioning for `R`. It downloads local copies of all your packages, and that can ensure that you have all the right stuff to distribute with your work.^[We've found that this package is a bit tricky to use so we don't always recommend it, but it may improve in future.] Some other groups are using Docker, a system for making virtual machines that have everything for your project inside them and can be unpacked on other machines to reproduce your *exact* environment. We haven't worked with these but they seem like a good option for full reproducibility. 
+
+If you don't want to pursue these heavier-weight options, one simple thing you *can* do is end your RMarkdown with a printout of all the packages you used. Do this by running `session_info` from the `devtools` package.^[You can't do this in a manuscript, but you could document your environment in a separate RMarkdown file, for example, or embed the results in a comment.]
 
 ```{r}
 devtools::session_info()
 ```
-
-could even use `docker`, but that's outside the scope of the course!
-
-# FAQ
-
-
