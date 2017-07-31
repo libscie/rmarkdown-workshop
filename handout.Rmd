@@ -1,26 +1,36 @@
 ---
 title: "RMarkdown for writing reproducible scientific papers"
-author: "[Mike Frank](mailto:) & [Chris Hartgerink](mailto:chris@libscie.org)"
+author: '[Mike Frank](mailto:) & [Chris Hartgerink](mailto:chris@libscie.org)'
 date: '`r Sys.Date()`'
 output:
-  tufte::tufte_html:
-    toc: yes
-    toc_depth: 1
   tufte::tufte_handout:
     citation_package: natbib
     latex_engine: pdflatex
   tufte::tufte_book:
     citation_package: natbib
     latex_engine: pdflatex
+  tufte::tufte_html:
+    toc: yes
+    toc_depth: 1
 link-citations: yes
 bibliography: library.bib
 ---
 
-There is also a slidedeck that goes along with this [here](https://libscie.github.io/rmarkdown-workshop), which is worth looking at if you don't know what you're doing on this page and what to look at. Going through this document takes at most two hours, assuming you already know some basic `R` programming. If you find any errors and have a Github account, [please suggest changes here](https://github.com/libscie/rmarkdown-workshop/edit/master/handout.Rmd). All [content](https://github.com/libscie/rmarkdown-workshop) is CC 0 licensed, so feel free to remix and reuse! 
-  
+
+```{r, echo=FALSE}
+library(knitr)
+opts_chunk$set(fig.width=4, fig.height=3, 
+               echo=TRUE, 
+               warning=FALSE, message=FALSE, 
+               cache=TRUE)
+```
+
+
 # Introduction
 
-This document is a short tutorial on using RMarkdown to mix prose and code together for creating reproducible scientific documents. It's based on documents that both Chris and Mike wrote about  independently (see [here](https://elifesciences.org/labs/cad57bcf/composing-reproducible-manuscripts-using-r-markdown) and [here](http://babieslearninglanguage.blogspot.com/2015/11/preventing-statistical-reporting-errors.html) if you're interested). In short: RMarkdown allows you to create documents that are compiled with code, producing your next scientific paper.^[Note: this is also possible for Python and other open-source data analysis languages, but we focus on R.]
+This document is a short tutorial on using RMarkdown to mix prose and code together for creating reproducible scientific documents.^[There is also a slidedeck that goes along with this handout available **[here](https://libscie.github.io/rmarkdown-workshop)**, which is worth looking at if you don't know what you're doing on this page and what to look at. Going through this document takes at most two hours, assuming you already know some basic `R` programming. If you find any errors and have a Github account, **[please suggest changes here](https://github.com/libscie/rmarkdown-workshop/edit/master/handout.Rmd)**. All **[content](https://github.com/libscie/rmarkdown-workshop)** is CC 0 licensed, so feel free to remix and reuse!]
+
+The tutorial is based on documents that both Chris and Mike wrote independently (see [here](https://elifesciences.org/labs/cad57bcf/composing-reproducible-manuscripts-using-r-markdown) and [here](http://babieslearninglanguage.blogspot.com/2015/11/preventing-statistical-reporting-errors.html) if you're interested). In short: RMarkdown allows you to create documents that are compiled with code, producing your next scientific paper.^[Note: this is also possible for Python and other open-source data analysis languages, but we focus on R.]
 
 Now we're together trying to help spread the word, because it can make writing manuscripts so much easier! We wrote this handout in RMarkdown as well (looks really sweet, no?).
 
@@ -66,7 +76,7 @@ Great, you installed both `R` and `Rstudio`! Next up, making your first RMarkdow
 
 Fire up Rstudio and create a new RMarkdown file. Don't worry about the settings, we'll get to that later.
 
-```{r, echo = FALSE}
+```{r, echo = FALSE, fig.width=4}
 knitr::include_graphics('figures/newfile.png')
 ```
 
@@ -148,8 +158,8 @@ Swap over to your new sample markdown.
 
 ```yaml
 output: 
-  html_document:
-    toc: true
+html_document:
+toc: true
 ```
 
 Now recompile. Looks spiffy, right?^[Pro-tip: you can specify how deep the TOC should go by adding `toc_depth: 2` to go two levels deep]
@@ -176,7 +186,7 @@ We often also add `chunk options` to each code chunk so that, for example:
 
 There are many others available as well. Caching can be very helpful for large files, but can also cause problems when there are external dependencies that change. An example that is useful for manuscripts is
 
-```{r}
+```{r eval=FALSE}
 opts_chunk$set(fig.width=8, fig.height=5, 
                echo=TRUE, 
                warning=FALSE, message=FALSE, 
@@ -193,6 +203,12 @@ qplot(hp, mpg, col = factor(cyl), data = mtcars)
 ```
 
 All you have to do is make the plot and it will render straight into the text. 
+
+External graphics can also be included, as follows:
+
+```{r eval = FALSE}
+knitr::include_graphics("path/to/file")
+```
 
 ## Tables
 
@@ -228,13 +244,11 @@ We often need APA-formatted statistics. We can compute them first, and then prin
 ts <- with(mtcars,t.test(hp[cyl==4], hp[cyl==6]))
 ```
 
-This pre-computation makes it easy to write:
-
 > There's a statistically-significant difference in horsepower for 4- and 6-cylinder cars  ($t(`r round(ts$parameter,2)`) = `r round(ts$statistic,2)`$, $p = `r round(ts$p.value,3)`$). 
 
-To insert these stats inline I wrote e.g. `round(ts$parameter, 2)` inside an inline code block.
+To insert these stats inline I wrote e.g. `round(ts$parameter, 2)` inside an inline code block.^[APA would require omission of the leading zero. `papaja::printp()` will let you do that, see below.]
 
-Note that rounding can occasionally get you in trouble here, because it's very easy to have an output of $p = 0$ when in fact $p$ can never be exactly equal to 0. Nonetheless, this can help you prevent rounding errors.
+Note that rounding can occasionally get you in trouble here, because it's very easy to have an output of $p = 0$ when in fact $p$ can never be exactly equal to 0. Nonetheless, this can help you prevent rounding errors and the wrath of `statcheck`.
 
 ## Exercises
 
@@ -242,29 +256,120 @@ Note that rounding can occasionally get you in trouble here, because it's very e
 
 # Writing APA-format papers
 
+(Thanks to [Frederick Aust](http://github.com/crsh) for contributing this section!)
+
 The end-game of reproducible research is to knit your entire paper. We'll focus on APA-style writeups. Managing APA format is a pain in the best of times. Isn't it nice to get it done for you? 
 
-## Exercise 
+We're going to use the `papaja` package. `papaja` is a R-package including a R Markdown template that can be used to produce documents that adhere to the American Psychological Association (APA) manuscript guidelines (6th Edition).
 
-We're going to use the `papaja` package. To install this, you need the `devtools` package (required above). One that's installed and you've loaded it (`library(devtools)`), then run `devtools::install_github("crsh/papaja")`.
+## Software requirements
 
-Once you've got this working, start a new RMarkdown using the default template for `papaja`.
+To use `papaja`, make sure you are using the latest versions of R and RStudio. If you want to create PDF- in addition to DOCX-files you need **[TeX](http://de.wikipedia.org/wiki/TeX) 2013 or later**. Try [MikTeX](http://miktex.org/) for Windows, [MacTeX](https://tug.org/mactex/) for Mac, or [TeX Live](http://www.tug.org/texlive/) for Linux. Some Linux users may need a few additional TeX packages for the LaTeX document class `apa6` to work. For Ubuntu, we suggest running:
 
-```{r, echo = FALSE}
-knitr::include_graphics('figures/newfile.png')
+```{sh ubuntu_extras, eval = FALSE}
+sudo apt-get install texlive texlive-publishers texlive-fonts-extra texlive-latex-extra texlive-humanities lmodern
 ```
 
-Compile this document, and look at how awesome it is. (To compile you need `texlive`, a library for compiling markdown to PDF, so you may need to wait and install this later if it's not working). 
+## Installing `papaja`
 
-Try pasting in your figure and table from your other RMarkdown (don't forget any libraries you need to make it compile). Presto, ready to submit!
+`papaja` has not yet been released on CRAN but you can install it from GitHub.
 
-For a bit more on `papaja`, check out [this guide](https://rpubs.com/YaRrr/papaja_guide). 
+```{r install_papapja, eval = FALSE}
+# Install devtools package if necessary
+if(!"devtools" %in% rownames(installed.packages())) install.packages("devtools")
+
+# Install papaja
+devtools::install_github("crsh/papaja")
+```
+
+## Creating a document
+
+The APA manuscript template should now be available through the RStudio menus when creating a new R Markdown file.
+
+```{r template-selection, echo = FALSE, fig.cap = "papaja's APA6 template is available through the RStudio menues."}
+knitr::include_graphics("figures/template_selection.png")
+```
+
+When you click RStudio's *Knit* button `papaja`, `rmarkdown,` and `knitr` work together to create an APA conform manuscript that includes both your manuscript text and the results of any embedded R code.
+
+```{r knit-button, echo = FALSE, fig.cap = "The *Knit* button in the RStudio."}
+knitr::include_graphics("figures/knitting.png")
+```
+
+Note, if you don't have TeX installed on your computer, or if you would like to create a Word document replace `output: papaja::apa6_pdf` with `output: papaja::apa6_word` in the document YAML header.
+
+`papaja` provides some rendering options that only work if you use `output: papaja::apa6_pdf`.
+`figsintext` indicates whether figures and tables should be included at the end of the document---as required by APA guidelines---or rendered in the body of the document.
+If `figurelist`, `tablelist`, or `footnotelist` are set to `yes` a list of figure captions, table captions, or footnotes is given following the reference section.
+`lineno` indicates whether lines should be continuously numbered through out the manuscript.
+
+## Reporting statistical analyses
+
+`apa_print()` facilitates reporting of statistical analyses.
+The function formats the contents of R objects and produces readily reportable text.
+
+```{r eval=FALSE}
+recall_anova <- afex::aov_car(
+  Recall ~ (Task * Valence * Dosage) + Error(Subject/(Task * Valence)) + Dosage
+  , data = mixed_data
+  , type = 3
+)
+recall_anova_results <- apa_print(recall_anova, es = "pes")
+recall_anova_results_p <- apa_print(recall_anova, es = "pes", in_paren = TRUE)
+```
+
+Now, you can report the results of your analyses like so:
+
+```{r eval=FALSE}
+Item valence (`r anova_results_p$full$Valence`) and the task affected recall
+performance, `r anova_results$full$Task`; the dosage, however, had no effect
+on recall, `r anova_results$full$Dosage`. There was no significant interaction.
+```
+
+`apa_print()` also creates reportable tables---in this case a complete ANOVA table.
+You can include the table into the document by passing `recall_anova_results$table` to `apa_table()`.
+Remeber to include the `results = "asis"` argument in the chunk options of the chunk that generates the table.
+
+```{r eval=FALSE}
+apa_table(
+  recall_anova_results$table
+  , align = c("lrcrrr")
+  , caption = "ANOVA table for the analyis of the example data set."
+  , note = "This is a table created using R and papaja."
+)
+```
+
+## Cross-referencing
+
+`papaja` enables the use of `bookdown` cross-referencing syntax as detailed in the [bookdown documentation](https://bookdown.org/yihui/bookdown/cross-references.html).
+Generally, a cross-reference to a figure, table, or document section can be done by using the syntax `\@ref(label)`.
+If you set a figure caption in a code chunk via the chunk option `fig.cap = "This is my figure caption."`, the label for that figure is based on the label of the code chunk, e.g., if the chunk label is `foo`, the figure label will be `fig:foo`.
+If you used `knitr::kable()` or `apa_table()` to create a table, the label for that table is, again, based on the label of the code chunk, e.g., if the chunk label is `foo`, the figure label will be `tab:foo`.
 
 ## Bibiographic management
 
 It's also possible to include references using `bibtex`, by using `@ref` syntax. An option for managing references is [bibdesk](http://bibdesk.sourceforge.net/), which integrates with google scholar.^[But many other options are possible.] 
 
 With a bibtex file included, you can refer to papers. As an example, `@nuijten2016` results in the in text citation "@nuijten2016", or cite them parenthetically with `[@nuijten2016]` [@nuijten2016]. Take a look at the `papaja` APA example to see how this works. 
+
+`citr` is an R package that provides an easy-to-use [RStudio addin](https://rstudio.github.io/rstudioaddins/) that facilitates inserting citations.
+The addin will automatically look up the Bib(La)TeX-file(s) specified in the YAML front matter.
+The references for the inserted citations are automatically added to the documents reference section.
+
+<!-- # ```{r citr-gif, echo = FALSE, fig.align = "center", fig.cap = "Demonstration of the RStudio addin from the `citr` package that inserts R Markdown citations."} -->
+<!-- # knitr::include_graphics("figures/addin_demo.gif") -->
+<!-- # ``` -->
+
+Once `citr` is installed (`install.packages("citr")`) and you have restarted your R session, the addin appears in the menus and you can define a [keyboard shortcut](https://rstudio.github.io/rstudioaddins/#keyboard-shorcuts) to call the addin.
+
+## Exercise
+
+Make sure you've got `papaja`, then open a new template file. Compile this document, and look at how awesome it is. (To compile you need `texlive`, a library for compiling markdown to PDF, so you may need to wait and install this later if it's not working). 
+
+Try pasting in your figure and table from your other RMarkdown (don't forget any libraries you need to make it compile). Presto, ready to submit!
+
+For a bit more on `papaja`, check out [this guide](https://rpubs.com/YaRrr/papaja_guide). 
+
 
 # Further Frontiers
 
@@ -280,7 +385,11 @@ And of course because not everyone uses R, you can simply click on the knit opti
 
 Once you provide code and data for your RMarkdown, you are most of the way to full computational reproducibility. Other people should be able to get the same numbers as you for your paper!
 
-But there's still one wrinkle. What if you use linear mixed effect models from `lme4` and then the good people developing that package make it better -- but that changes your numbers? Package versioning (and versioning on `R` itself) is a real concern. To combat this issue, there are a number of tools out there. The `packrat` package is a solution for versioning in `R`. It downloads local copies of all your packages, which ensures that you have all the right stuff to distribute with your work.^[We've found that this package is a bit tricky to use so we don't always recommend it, but it may improve in the future.] Some other groups are using Docker, a system for making virtual machines that have everything for your project inside them and can be unpacked on other machines to reproduce your *exact* environment. We haven't worked with these but they seem like a good option for full reproducibility. 
+But there's still one wrinkle. What if you use linear mixed effect models from `lme4` and then the good people developing that package make it better -- but that changes your numbers? Package versioning (and versioning on `R` itself) is a real concern. To combat this issue, there are a number of tools out there. 
+
+* The `packrat` package is a solution for package versioning for `R`. It downloads local copies of all your packages, and that can ensure that you have all the right stuff to distribute with your work.^[We've found that this package is a bit tricky to use so we don't always recommend it, but it may improve in future.] 
+* Some other groups are using Docker, a system for making virtual machines that have everything for your project inside them and can be unpacked on other machines to reproduce your *exact* environment. We haven't worked with these but they seem like a good option for full reproducibility. 
+* The `checkpoint` package allows you to install packages exactly as they were on CRAN (the main repository for packages), so you can "freeze" your package versions ([more info here](https://cran.r-project.org/web/packages/checkpoint/index.html)).
 
 If you don't want to pursue these heavier-weight options, one simple thing you *can* do is end your RMarkdown with a printout of all the packages you used. Do this by running `sessionInfo`.
 
