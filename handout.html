@@ -51,7 +51,7 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 <li><a href="#getting-started">Getting Started</a></li>
 <li><a href="#structure-of-an-rmarkdown-file">Structure of an RMarkdown file</a></li>
 <li><a href="#markdown-syntax">Markdown syntax</a></li>
-<li><a href="#adding-more-code-tables-and-graphs">Adding more code (Tables and Graphs)</a></li>
+<li><a href="#headers-tables-and-graphs">Headers, Tables, and Graphs</a></li>
 <li><a href="#writing-apa-format-papers">Writing APA-format papers</a></li>
 <li><a href="#further-frontiers">Further Frontiers</a></li>
 </ul>
@@ -140,12 +140,18 @@ x &lt;- 1 + 1</code></pre>
 </div>
 <div id="exercises" class="section level2">
 <h2>Exercises</h2>
-<p>Switch over to your new RMarkdown file.</p>
+<p>These exercises are all about failure modes to RMarkdown. Go ahead and switch over to your new RMarkdown file.</p>
 <ol style="list-style-type: decimal">
-<li>Create a code chunk. In it, use <code>write.csv(USArrests, &quot;USArrests.csv&quot;)</code> to write out some data to your hard drive. Subsequently, find that file on your computer. Where is it?<label for="tufte-sn-5" class="margin-toggle sidenote-number">5</label><input type="checkbox" id="tufte-sn-5" class="margin-toggle"><span class="sidenote"><span class="sidenote-number">5</span> RMarkdown files operate out of the directory in which they are located. If you read in data, it’s important to write paths relatively starting from that “project root” directory, instead of absolute – otherwise when you share the file the paths will all be wrong. Similarly, if you write out data they go in the root directory.</span></li>
-<li>Load the <code>ggplot2</code> package (or any other that you use frequently) in a code chunk and regenerate the document. Now try load some packages you’ve never heard of, like <code>adehabitatHS</code> or <code>QCA</code>. What happens?<label for="tufte-sn-6" class="margin-toggle sidenote-number">6</label><input type="checkbox" id="tufte-sn-6" class="margin-toggle"><span class="sidenote"><span class="sidenote-number">6</span> We like to load all our packages at the top of the document so it’s easy to know what you need to install to make it run.</span></li>
+<li><p>Create a code chunk. In it, use <code>write.csv(USArrests, &quot;USArrests.csv&quot;)</code> to write out some data to your hard drive. Subsequently, find that file on your computer. Where is it?</p></li>
+<li><p>Load the <code>ggplot2</code> package (or any other that you use frequently) in a code chunk and regenerate the document. Now try to load some packages you’ve never heard of, like <code>adehabitatHS</code> or <code>QCA</code>. What happens?</p></li>
 </ol>
-<!-- 4. Force RMarkdown to install packages that the user doesn't yet have when the document is generated. -->
+</div>
+<div id="solutions" class="section level2">
+<h2>Solutions</h2>
+<ol style="list-style-type: decimal">
+<li><p>RMarkdown files operate out of the directory in which they are located. If you read in data, it’s important to write paths relatively starting from that “project root” directory, instead of absolute – otherwise when you share the file the paths will all be wrong. Similarly, if you write out data they go in the root directory.</p></li>
+<li><p>If you don’t have packages installed, the knitting process will fail. How do you head this off? We like to load all our packages at the top of the document so it’s easy to know what you need to install to make it run; it’s also easy for users to see what packages they need. Some folks <code>install.packages</code> <em>in the script</em>, though we don’t advocate for that here.</p></li>
+</ol>
 </div>
 </div>
 <div id="markdown-syntax" class="section level1">
@@ -169,14 +175,16 @@ x &lt;- 1 + 1</code></pre>
 <pre class="yaml"><code>output: 
   html_document:
     toc: true</code></pre>
-<p>Now recompile. Looks nice, right?<label for="tufte-sn-7" class="margin-toggle sidenote-number">7</label><input type="checkbox" id="tufte-sn-7" class="margin-toggle"><span class="sidenote"><span class="sidenote-number">7</span> Pro-tip: you can specify how deep the TOC should go by adding <code>toc_depth: 2</code> to go two levels deep</span></p>
+<p>Now recompile. Looks nice, right?<label for="tufte-sn-5" class="margin-toggle sidenote-number">5</label><input type="checkbox" id="tufte-sn-5" class="margin-toggle"><span class="sidenote"><span class="sidenote-number">5</span> Pro-tip: you can specify how deep the TOC should go by adding <code>toc_depth: 2</code> to go two levels deep</span></p>
 <ol start="3" style="list-style-type: decimal">
 <li>Try adding another option: <code>toc_float: true</code>. Recompile – super cool. There are plenty more great output options that you can modify. <a href="http://rmarkdown.rstudio.com/html_document_format.html">Here is a link to the documentation.</a></li>
 </ol>
 </div>
 </div>
-<div id="adding-more-code-tables-and-graphs" class="section level1">
-<h1>Adding more code (Tables and Graphs)</h1>
+<div id="headers-tables-and-graphs" class="section level1">
+<h1>Headers, Tables, and Graphs</h1>
+<div id="headers" class="section level2">
+<h2>Headers</h2>
 <p>We’re going to want more libraries loaded (for now we’re loading them inline).</p>
 <pre class="r"><code>library(knitr)
 library(ggplot2)
@@ -194,6 +202,7 @@ library(devtools)</code></pre>
                echo=TRUE, 
                warning=FALSE, message=FALSE, 
                cache=TRUE)</code></pre>
+</div>
 <div id="graphs" class="section level2">
 <h2>Graphs</h2>
 <p>It’s really easy to include graphs, like this one. (Using the <code>mtcars</code> dataset that comes with <code>ggplot2</code>).</p>
@@ -364,13 +373,13 @@ kable(tidy(mod), digits = 3)</code></pre>
 <blockquote>
 <p>There’s a statistically-significant difference in horsepower for 4- and 6-cylinder cars (<span class="math inline">\(t(11.49) = -3.56\)</span>, <span class="math inline">\(p = 0.004\)</span>).</p>
 </blockquote>
-<p>To insert these stats inline I wrote e.g. <code>round(ts$parameter, 2)</code> inside an inline code block.<label for="tufte-sn-8" class="margin-toggle sidenote-number">8</label><input type="checkbox" id="tufte-sn-8" class="margin-toggle"><span class="sidenote"><span class="sidenote-number">8</span> APA would require omission of the leading zero. <code>papaja::printp()</code> will let you do that, see below.</span></p>
+<p>To insert these stats inline I wrote e.g. <code>round(ts$parameter, 2)</code> inside an inline code block.<label for="tufte-sn-6" class="margin-toggle sidenote-number">6</label><input type="checkbox" id="tufte-sn-6" class="margin-toggle"><span class="sidenote"><span class="sidenote-number">6</span> APA would require omission of the leading zero. <code>papaja::printp()</code> will let you do that, see below.</span></p>
 <p>Note that rounding can occasionally get you in trouble here, because it’s very easy to have an output of <span class="math inline">\(p = 0\)</span> when in fact <span class="math inline">\(p\)</span> can never be exactly equal to 0. Nonetheless, this can help you prevent rounding errors and the wrath of <code>statcheck</code>.</p>
 </div>
 <div id="exercises-2" class="section level2">
 <h2>Exercises</h2>
 <ol style="list-style-type: decimal">
-<li>Using the <code>mtcars</code> dataset, insert a table and a graph of your choice into the document.<label for="tufte-sn-9" class="margin-toggle sidenote-number">9</label><input type="checkbox" id="tufte-sn-9" class="margin-toggle"><span class="sidenote"><span class="sidenote-number">9</span> If you’re feeling uninspired, try <code>hist(mtcars$mpg)</code>.</span></li>
+<li>Using the <code>mtcars</code> dataset, insert a table and a graph of your choice into the document.<label for="tufte-sn-7" class="margin-toggle sidenote-number">7</label><input type="checkbox" id="tufte-sn-7" class="margin-toggle"><span class="sidenote"><span class="sidenote-number">7</span> If you’re feeling uninspired, try <code>hist(mtcars$mpg)</code>.</span></li>
 </ol>
 </div>
 </div>
@@ -381,7 +390,7 @@ kable(tidy(mod), digits = 3)</code></pre>
 <p>We’re going to use the <code>papaja</code> package. <code>papaja</code> is a R-package including a R Markdown template that can be used to produce documents that adhere to the American Psychological Association (APA) manuscript guidelines (6th Edition).</p>
 <div id="software-requirements" class="section level2">
 <h2>Software requirements</h2>
-<p>To use <code>papaja</code>, make sure you are using the latest versions of R and RStudio. If you want to create PDF- in addition to DOCX-files you need <strong><a href="http://de.wikipedia.org/wiki/TeX">TeX</a> 2013 or later</strong>. Try <a href="http://miktex.org/">MikTeX</a> for Windows, <a href="https://tug.org/mactex/">MacTeX</a> for Mac, or <a href="http://www.tug.org/texlive/">TeX Live</a> for Linux. Some Linux users may need a few additional TeX packages for the LaTeX document class <code>apa6</code> to work.<label for="tufte-sn-10" class="margin-toggle sidenote-number">10</label><input type="checkbox" id="tufte-sn-10" class="margin-toggle"><span class="sidenote"><span class="sidenote-number">10</span> For Ubuntu, we suggest running: <code>sudo apt-get install texlive texlive-publishers texlive-fonts-extra texlive-latex-extra texlive-humanities lmodern</code>.</span></p>
+<p>To use <code>papaja</code>, make sure you are using the latest versions of R and RStudio. If you want to create PDF- in addition to DOCX-files you need <strong><a href="http://de.wikipedia.org/wiki/TeX">TeX</a> 2013 or later</strong>. Try <a href="http://miktex.org/">MikTeX</a> for Windows, <a href="https://tug.org/mactex/">MacTeX</a> for Mac, or <a href="http://www.tug.org/texlive/">TeX Live</a> for Linux. Some Linux users may need a few additional TeX packages for the LaTeX document class <code>apa6</code> to work.<label for="tufte-sn-8" class="margin-toggle sidenote-number">8</label><input type="checkbox" id="tufte-sn-8" class="margin-toggle"><span class="sidenote"><span class="sidenote-number">8</span> For Ubuntu, we suggest running: <code>sudo apt-get install texlive texlive-publishers texlive-fonts-extra texlive-latex-extra texlive-humanities lmodern</code>.</span></p>
 </div>
 <div id="installing-papaja" class="section level2">
 <h2>Installing <code>papaja</code></h2>
@@ -439,7 +448,7 @@ recall_anova_results_p &lt;- apa_print(recall_anova, es = &quot;pes&quot;, in_pa
 </div>
 <div id="bibiographic-management" class="section level2">
 <h2>Bibiographic management</h2>
-<p>It’s also possible to include references using <code>bibtex</code>, by using <code>@ref</code> syntax. An option for managing references is <a href="http://bibdesk.sourceforge.net/">bibdesk</a>, which integrates with google scholar.<label for="tufte-sn-11" class="margin-toggle sidenote-number">11</label><input type="checkbox" id="tufte-sn-11" class="margin-toggle"><span class="sidenote"><span class="sidenote-number">11</span> But many other options are possible.</span></p>
+<p>It’s also possible to include references using <code>bibtex</code>, by using <code>@ref</code> syntax. An option for managing references is <a href="http://bibdesk.sourceforge.net/">bibdesk</a>, which integrates with google scholar.<label for="tufte-sn-9" class="margin-toggle sidenote-number">9</label><input type="checkbox" id="tufte-sn-9" class="margin-toggle"><span class="sidenote"><span class="sidenote-number">9</span> But many other options are possible.</span></p>
 <p>With a bibtex file included, you can refer to papers. As an example, <code>@nuijten2016</code> results in the in text citation <a href="mailto:%22@nuijten2016%22">&quot;@nuijten2016&quot;</a>, or cite them parenthetically with <code>[@nuijten2016]</code> <span class="citation">(Nuijten et al. <label for="tufte-mn-2" class="margin-toggle">&#8853;</label><input type="checkbox" id="tufte-mn-2" class="margin-toggle">2016<span class="marginnote">Nuijten, Michèle B, Chris HJ Hartgerink, Marcel ALM van Assen, Sacha Epskamp, and Jelte M Wicherts. 2016. “The Prevalence of Statistical Reporting Errors in Psychology (1985–2013).” <em>Behavior Research Methods</em> 48 (4). Springer: 1205–26.</span>)</span>. Take a look at the <code>papaja</code> APA example to see how this works.</p>
 <p><code>citr</code> is an R package that provides an easy-to-use <a href="https://rstudio.github.io/rstudioaddins/">RStudio addin</a> that facilitates inserting citations. The addin will automatically look up the Bib(La)TeX-file(s) specified in the YAML front matter. The references for the inserted citations are automatically added to the documents reference section.</p>
 <!-- # ```{r citr-gif, echo = FALSE, fig.align = "center", fig.cap = "Demonstration of the RStudio addin from the `citr` package that inserts R Markdown citations."} -->
@@ -467,7 +476,7 @@ recall_anova_results_p &lt;- apa_print(recall_anova, es = &quot;pes&quot;, in_pa
 <p>Once you provide code and data for your RMarkdown, you are most of the way to full computational reproducibility. Other people should be able to get the same numbers as you for your paper!</p>
 <p>But there’s still one wrinkle. What if you use linear mixed effect models from <code>lme4</code> and then the good people developing that package make it better – but that changes your numbers? Package versioning (and versioning on <code>R</code> itself) is a real concern. To combat this issue, there are a number of tools out there.</p>
 <ul>
-<li>The <code>packrat</code> package is a solution for package versioning for <code>R</code>. It downloads local copies of all your packages, and that can ensure that you have all the right stuff to distribute with your work.<label for="tufte-sn-12" class="margin-toggle sidenote-number">12</label><input type="checkbox" id="tufte-sn-12" class="margin-toggle"><span class="sidenote"><span class="sidenote-number">12</span> We’ve found that this package is a bit tricky to use so we don’t always recommend it, but it may improve in future.</span></li>
+<li>The <code>packrat</code> package is a solution for package versioning for <code>R</code>. It downloads local copies of all your packages, and that can ensure that you have all the right stuff to distribute with your work.<label for="tufte-sn-10" class="margin-toggle sidenote-number">10</label><input type="checkbox" id="tufte-sn-10" class="margin-toggle"><span class="sidenote"><span class="sidenote-number">10</span> We’ve found that this package is a bit tricky to use so we don’t always recommend it, but it may improve in future.</span></li>
 <li>Some other groups are using Docker, a system for making virtual machines that have everything for your project inside them and can be unpacked on other machines to reproduce your <em>exact</em> environment. We haven’t worked with these but they seem like a good option for full reproducibility.</li>
 <li>The <code>checkpoint</code> package allows you to install packages exactly as they were on CRAN (the main repository for packages), so you can “freeze” your package versions (<a href="https://cran.r-project.org/web/packages/checkpoint/index.html">more info here</a>).</li>
 </ul>
@@ -498,9 +507,9 @@ recall_anova_results_p &lt;- apa_print(recall_anova, es = &quot;pes&quot;, in_pa
 ## [17] parallel_3.4.0   withr_1.0.2      dplyr_0.5.0      stringr_1.2.0   
 ## [21] rprojroot_1.2    grid_3.4.0       tufte_0.2        R6_2.2.0        
 ## [25] foreign_0.8-67   rmarkdown_1.6    reshape2_1.4.2   tidyr_0.6.2     
-## [29] magrittr_1.5     backports_1.0.5  scales_0.4.1     codetools_0.2-15
-## [33] htmltools_0.3.6  assertthat_0.2.0 mnormt_1.5-5     colorspace_1.3-2
-## [37] labeling_0.3     stringi_1.1.5    lazyeval_0.2.0   munsell_0.4.3</code></pre>
+## [29] magrittr_1.5     backports_1.0.5  scales_0.4.1     htmltools_0.3.6 
+## [33] assertthat_0.2.0 mnormt_1.5-5     colorspace_1.3-2 labeling_0.3    
+## [37] stringi_1.1.5    lazyeval_0.2.0   munsell_0.4.3</code></pre>
 </div>
 </div>
 

@@ -21,7 +21,7 @@ bibliography: library.bib
 library(knitr)
 opts_chunk$set(echo=TRUE, 
                warning=FALSE, message=FALSE, 
-               cache=TRUE)
+               cache=FALSE)
 ```
 
 
